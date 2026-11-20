@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>إرسال إشعار — النفيس</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5edd8;--card:#fffaf0;--ink:#0d4a35;--gold:#9a7520;--text:#2a2416;--muted:#7a6a45;--border:rgba(154,117,32,.3)}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1a14;--card:#16241c;--text:#efe6cf;--muted:#c9b98a;--border:rgba(201,168,76,.3)}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;padding:24px 16px 60px}
+.wrap{max-width:480px;margin:0 auto}
+h1{font-family:'Amiri',serif;font-size:1.6rem;margin:0 0 4px;color:var(--gold)}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px}
+label{display:block;font-size:.82rem;font-weight:700;margin:12px 0 6px}
+input,textarea,select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--text);font:inherit;font-size:.95rem}
+textarea{min-height:80px;resize:vertical}
+button{width:100%;margin-top:16px;padding:14px;border:none;border-radius:12px;background:var(--ink);color:#e8c97a;font:inherit;font-weight:700;font-size:1rem;cursor:pointer}
+button:disabled{opacity:.6}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip{width:auto;margin:0;padding:8px 12px;font-size:.8rem;background:transparent;color:var(--gold);border:1px solid var(--border);border-radius:20px}
+#out{white-space:pre-wrap;font-size:.9rem;line-height:1.8}
+.preview{display:flex;gap:10px;align-items:flex-start;background:rgba(0,0,0,.04);border-radius:12px;padding:12px}
+.preview img{width:40px;height:40px;border-radius:9px}
+.pt{font-weight:700;font-size:.9rem}.pb{font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>إرسال إشعار</h1>
+  <div class="sub">يوصل لكل من فعّل الإشعارات في موقع الشيخ أحمد النفيس · <span id="count">—</span></div>
+
+  <div class="card">
+    <label for="key">كلمة المرور</label>
+    <input id="key" type="password" autocomplete="current-password" placeholder="ADMIN_KEY">
+
+    <label>قوالب سريعة</label>
+    <div class="row">
+      <button type="button" class="chip" onclick="tpl('ألفبائية النفيس 🔥','نزلت حلقة جديدة من ألفبائية النفيس','/#alifbaiya')">حلقة ألفبائية</button>
+      <button type="button" class="chip" onclick="tpl('تلاوة جديدة','استمع لتلاوة جديدة للشيخ أحمد النفيس','/#featured')">تلاوة</button>
+      <button type="button" class="chip" onclick="tpl('عشائية جديدة','نزلت عشائية جديدة للشيخ أحمد النفيس','/#isha')">عشائية</button>
+      <button type="button" class="chip" onclick="tpl('نشيد جديد','نزل نشيد جديد بصوت الشيخ أحمد النفيس','/#anasheed')">نشيد</button>
+    </div>
+
+    <label for="title">العنوان</label>
+    <input id="title" maxlength="120" oninput="prev()">
+    <label for="body">النص</label>
+    <textarea id="body" maxlength="300" oninput="prev()"></textarea>
+    <label for="url">القسم اللي يفتح عند الضغط</label>
+    <select id="url">
+      <option value="/">الرئيسية</option>
+      <option value="/#alifbaiya">ألفبائية النفيس</option>
+      <option value="/#anasheed">الأناشيد والمنظومات</option>
+      <option value="/#featured">تلاوات مميزة</option>
+      <option value="/#isha">عشائيات</option>
+      <option value="/#mushaf">المصحف الكامل</option>
+      <option value="/#lectures">محاضرات ودروس</option>
+      <option value="/#adiya">أدعية</option>
+      <option value="/#azkar">أذكار</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <div class="preview"><img src="/icon-192.png" alt=""><div><div class="pt" id="pt">العنوان</div><div class="pb" id="pb">النص</div></div></div>
+    <button id="send" onclick="send()">إرسال للجميع</button>
+  </div>
+
+  <div class="card" id="outc" style="display:none"><div id="out"></div></div>
+</div>
+<script>
+var $=function(id){return document.getElementById(id)};
+try{ $('key').value = localStorage.getItem('nufais_admin_key')||''; }catch(e){}
+function tpl(t,b,u){ $('title').value=t; $('body').value=b; $('url').value=u; prev(); }
+function prev(){ $('pt').textContent=$('title').value||'العنوان'; $('pb').textContent=$('body').value||'النص'; }
+function show(msg){ $('outc').style.display='block'; $('out').textContent=msg; }
+function loadCount(){
+  var k=$('key').value.trim(); if(!k) return;
+  fetch('/api/push/count',{headers:{'x-admin-key':k}}).then(function(r){return r.json()}).then(function(d){
+    if(d.count!=null) $('count').textContent='المشتركين: '+d.count;
+  }).catch(function(){});
+}
+$('key').addEventListener('change',function(){ try{localStorage.setItem('nufais_admin_key',$('key').value.trim())}catch(e){} loadCount(); });
+loadCount();
+async function send(){
+  var k=$('key').value.trim(), t=$('title').value.trim();
+  if(!k){ show('اكتب كلمة المرور'); return; }
+  if(!t){ show('اكتب عنوان الإشعار'); return; }
+  if(!confirm('ترسل الإشعار لكل المشتركين؟')) return;
+  $('send').disabled=true; show('جاري الإرسال…');
+  try{
+    var r=await fetch('/api/push/send',{method:'POST',headers:{'Content-Type':'application/json','x-admin-key':k},body:JSON.stringify({title:t,body:$('body').value.trim(),url:$('url').value})});
+    var d=await r.json();
+    if(!r.ok){ show('❌ '+(d.error||('خطأ '+r.status))); }
+    else{
+      try{localStorage.setItem('nufais_admin_key',k)}catch(e){}
+      show('✅ تم الإرسال\nوصل: '+d.sent+' من '+d.total+(d.removed?'\nاشتراكات منتهية انحذفت: '+d.removed:'')+(d.failed?'\nفشل: '+d.failed+' '+JSON.stringify(d.errors):''));
+      loadCount();
+    }
+  }catch(e){ show('❌ ما قدرت أوصل للخادم. تأكد إن الموقع مرفوع على Netlify من GitHub'); }
+  $('send').disabled=false;
+}
+</script>
+</body>
+</html>
