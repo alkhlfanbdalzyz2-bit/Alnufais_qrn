@@ -42,8 +42,17 @@ export async function handleSend(req, store, env, send = sendPush) {
   if (!url.startsWith("/")) url = "/";
   if (!title) return json({ error: "اكتب عنوان الإشعار" }, 400);
 
-  const vapid = { publicKey: env.VAPID_PUBLIC_KEY, privateKey: env.VAPID_PRIVATE_KEY, subject: env.VAPID_SUBJECT || "https://alnufaisqrn.com" };
-  const payload = { title, body: text, url, tag: "nufais-" + Date.now() };
+  const r = await broadcast({ title, body: text, url, tag: "nufais-" + Date.now() }, store, env, send);
+  return json({ ok: true, ...r });
+}
+
+function vapidFrom(env) {
+  return { publicKey: env.VAPID_PUBLIC_KEY, privateKey: env.VAPID_PRIVATE_KEY, subject: env.VAPID_SUBJECT || "https://alnufaisqrn.com" };
+}
+
+// إرسال لكل المشتركين وحذف المنتهية
+export async function broadcast(payload, store, env, send = sendPush) {
+  const vapid = vapidFrom(env);
   const { blobs } = await store.list();
   let sent = 0, failed = 0, removed = 0;
   const errors = {};
@@ -59,7 +68,26 @@ export async function handleSend(req, store, env, send = sendPush) {
       } catch (e) { failed++; errors.network = (errors.network || 0) + 1; }
     }));
   }
-  return json({ ok: true, total: blobs.length, sent, failed, removed, errors });
+  return { total: blobs.length, sent, failed, removed, errors };
+}
+
+// الإشعارات المجدولة: ترسل كل عنصر حان وقته مرة وحدة فقط
+export async function runQueue(queue, store, meta, env, now = Date.now(), send = sendPush) {
+  const log = [];
+  if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) return [{ error: "VAPID keys missing" }];
+  for (const item of queue || []) {
+    const t = Date.parse(item.at);
+    if (!item.id || !item.title || isNaN(t)) { log.push({ id: item.id, skip: "invalid" }); continue; }
+    if (t > now) continue;                                   // لسا ما حان وقته
+    if (now - t > 6 * 3600 * 1000) continue;                 // فات وقته بأكثر من ٦ ساعات
+    const mark = "sent:" + item.id;
+    if (await meta.get(mark)) continue;                      // انرسل قبل
+    await meta.set(mark, new Date(now).toISOString());       // نسجّل قبل الإرسال لمنع التكرار
+    let url = String(item.url || "/"); if (!url.startsWith("/")) url = "/";
+    const r = await broadcast({ title: String(item.title).slice(0, 120), body: String(item.body || "").slice(0, 300), url, tag: "nufais-" + item.id }, store, env, send);
+    log.push({ id: item.id, ...r });
+  }
+  return log;
 }
 
 // عدد المشتركين (للوحة الإدارة)

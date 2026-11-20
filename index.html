@@ -3515,6 +3515,8 @@ var ANASHEED_ALIF = [
   {id:'A3J5X1fvUn4', title:'ألفبائية النفيس — الحلقة الثالثة', tag:'ألفبائية النفيس'},
   {id:'n_dc0U9YdTA', title:'ألفبائية النفيس — الحلقة الرابعة', tag:'ألفبائية النفيس'},
 ];
+// showAt: الحلقة ما تظهر قبل هذا الوقت
+ANASHEED_ALIF = ANASHEED_ALIF.filter(function(x){ return !x.showAt || Date.now() >= Date.parse(x.showAt); });
 var ANASHEED_QASAED = [
   {id:'HEYIcr8ODcI', title:'تائية الإلبيري — منظومة أبي إسحاق في النصح وطلب العلم', tag:'قصائد'},
   {id:'tHFMD2f__iA', title:'الفراقية لابن زريق البغدادي — أستودع الله في بغداد لي قمراً', tag:'قصائد'},
@@ -4773,6 +4775,11 @@ window.addEventListener('appinstalled', function(){
 <div id="push-toast" style="display:none;position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:10000;max-width:88%;background:var(--ink);color:var(--g3);border:1px solid rgba(154,117,32,.5);padding:12px 18px;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:0.86rem;line-height:1.7;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.35)"></div>
 <script>
 /* ═══ الإشعارات (Web Push) ═══ */
+// إخفاء أي بطاقة لها وقت نشر لسا ما وصل
+document.querySelectorAll('[data-show-at]').forEach(function(el){
+  var t=Date.parse(el.getAttribute('data-show-at'));
+  if(!isNaN(t) && Date.now()<t) el.remove();
+});
 var NUFAIS_VAPID_KEY = 'BGI71snLHooY6idgH4NEJyx2WXNIpQjLnhCKIwuOYl7IcPhIecNNjHVTE3z-jsKuhdjHu1t1JUMwbV-neTn11es';
 function _pushToast(msg){
   var t=document.getElementById('push-toast'); if(!t) return;
