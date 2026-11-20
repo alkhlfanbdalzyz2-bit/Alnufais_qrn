@@ -4254,20 +4254,41 @@ function resetZTab(){
 (function(){
   document.querySelectorAll('img').forEach(function(img){ img.loading='lazy'; });
 })();
+function _lastPlayed(){ try{ return JSON.parse(localStorage.getItem('lastPlayed')||'null'); }catch(e){ return null; } }
+// عنوان العنصر كما هو — «سورة» تنكتب بس إذا كان فعلاً سورة من المصحف
+function _lastTitle(last){
+  if(last.yt) return last.title || '—';
+  var s = ALL_SURAHS.find(function(x){ return x.num===last.num; });
+  if(s && s.ar===last.ar) return 'سورة ' + s.ar;
+  return String(last.ar||'—');          // بيانات قديمة لعنصر مو سورة
+}
 function showLastPlayed(){
-  const last = JSON.parse(localStorage.getItem('lastPlayed')||'null');
+  const last = _lastPlayed();
   const card = document.getElementById('lastCard');
   const name = document.getElementById('lastName');
   if(last && card && name){
     card.style.display = 'block';
-    name.textContent = 'سورة ' + last.ar;
+    name.textContent = _lastTitle(last);
   }
 }
 function resumeLast(){
-  const last = JSON.parse(localStorage.getItem('lastPlayed')||'null');
+  const last = _lastPlayed();
   if(!last) return;
+  if(last.yt){
+    var q = Array.isArray(last.queue) && last.queue.length ? last.queue : [{id:last.yt, title:last.title, tag:last.tag}];
+    var i = q.findIndex(function(x){ return x.id===last.yt; });
+    ytOpen(last.yt, last.title, last.tag, q, i<0?0:i, last.fav);
+    return;
+  }
   const s = ALL_SURAHS.find(x=>x.num===last.num);
-  if(s){ showPage('mushaf'); setTimeout(()=>playSurah(s), 400); }
+  if(s && s.ar===last.ar){ showPage('mushaf'); setTimeout(()=>playSurah(s), 400); return; }
+  // بيانات قديمة: نبحث عن العنصر بعنوانه
+  try{
+    buildSearchIndex();
+    var hit = SEARCH_INDEX.find(function(x){ return x.title===last.ar; });
+    if(hit){ hit.act(); return; }
+  }catch(e){}
+  document.getElementById('lastCard').style.display='none';
 }
 
 renderSurahs(ALL_SURAHS);
@@ -4392,7 +4413,8 @@ function ytOpen(ytId, title, tag, queue, queueIndex, favKey){
 
   _ytUpdateNav();
   _ytUpdateFav();
-  localStorage.setItem('lastPlayed', JSON.stringify({num: _ytIndex, ar: title}));
+  try{ localStorage.setItem('lastPlayed', JSON.stringify({yt: ytId, title: title||'', tag: tag||'', fav: _ytFavKey, queue: _ytQueue, idx: _ytIndex})); }catch(e){}
+  showLastPlayed();
 }
 
 function ytClose(){
