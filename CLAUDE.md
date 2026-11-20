@@ -14,6 +14,8 @@
   - الدالة `push-scheduled` تشتغل كل دقيقة وترسل كل عنصر مرة وحدة فقط (id لا يتكرر أبداً).
   - الأوقات بتوقيت الكويت +03:00. العناصر اللي فات وقتها أكثر من ٦ ساعات ما تنرسل.
   - "أرسل الحين" = حط at بالوقت الحالي؛ ينرسل خلال دقيقة بعد انتهاء النشر (~١–٢ دقيقة).
+- عدد المشتركين: ابحث في سجلات Netlify (موصول) عن آخر سطر `PUSH_COUNT` (FunctionName=push-scheduled). نتائج الإرسال في `PUSH_SEND`.
+- موقع Netlify: alnufaisqrn — siteId 2acea01e-d27b-42b4-ac40-4fdbfc433f61
 - يدوي (احتياطي): `/admin.html` بكلمة المرور ADMIN_KEY.
 - أقسام url: `/#alifbaiya` `/#anasheed` `/#featured` `/#isha` `/#mushaf` `/#lectures` `/#adiya` `/#azkar`
 - المفاتيح في متغيرات Netlify فقط (VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, ADMIN_KEY) — لا تُكتب في المستودع (عام).

@@ -96,3 +96,15 @@ export async function handleCount(req, store, env) {
   const { blobs } = await store.list();
   return json({ count: blobs.length });
 }
+
+// تسجيل عدد المشتركين في السجل: عند كل تغيّر، ومرة كل ٢٤ ساعة على الأقل
+export async function reportCount(store, meta, now = Date.now()) {
+  const { blobs } = await store.list();
+  const n = blobs.length;
+  const prev = await meta.get("count", { type: "json" });
+  if (!prev || prev.n !== n || now - prev.t > 24 * 3600 * 1000) {
+    await meta.setJSON("count", { n, t: now });
+    return { subscribers: n, previous: prev ? prev.n : null };
+  }
+  return null;
+}
