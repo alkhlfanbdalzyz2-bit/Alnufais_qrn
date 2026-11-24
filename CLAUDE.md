@@ -17,6 +17,7 @@
 - عدد المشتركين: ابحث في سجلات Netlify (موصول) عن آخر سطر `PUSH_COUNT` (FunctionName=push-scheduled). نتائج الإرسال في `PUSH_SEND`.
 - موقع Netlify: alnufaisqrn — siteId 2acea01e-d27b-42b4-ac40-4fdbfc433f61
 - يدوي (احتياطي): `/admin.html` بكلمة المرور ADMIN_KEY.
+- روابط تبويب: `/#featured:khalaf` (hafs/khalaf/warsh/qalon/sossi/shuaba) و `/#lectures:khutab` (khutab/mahadarat/podcast)
 - أقسام url: `/#alifbaiya` `/#anasheed` `/#featured` `/#isha` `/#mushaf` `/#lectures` `/#adiya` `/#azkar`
 - المفاتيح في متغيرات Netlify فقط (VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, ADMIN_KEY) — لا تُكتب في المستودع (عام).
 - التشفير في `netlify/lib/webpush.mjs` بدون مكتبات، مطابق لمثال RFC 8291.

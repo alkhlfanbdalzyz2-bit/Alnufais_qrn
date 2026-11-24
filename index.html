@@ -1928,7 +1928,7 @@ updateBottomTabs('home');}" style="background:none;border:none;font-family:'IBM 
       <div style="display:flex;justify-content:space-between;align-items:center">
         <div style="font-family:'Amiri',serif;font-size:0.95rem;color:var(--text);font-weight:700">سورة النجم برواية خلف عن حمزة رمضان ١٤٤٢</div>
         <div style="font-size:0.7rem;color:var(--g2)">▶ يوتيوب</div>
-      <button class="fav-star" onclick="event.stopPropagation();toggleFavFeatured('w2wrcvM_vGs')" title="أضف للمفضلة">&#9734;</button>
+      <button class="fav-star" onclick="event.stopPropagation();toggleFavFeatured('4vsWFDZ-aVo')" title="أضف للمفضلة">&#9734;</button>
       </div>
     </div>
     <div style="background:#f0e8cc;border:1px solid rgba(154,117,32,.25);padding:20px;border-radius:2px;cursor:pointer" onclick="ytOpenFeat('w2wrcvM_vGs')">
@@ -1942,7 +1942,14 @@ updateBottomTabs('home');}" style="background:none;border:none;font-family:'IBM 
       <div style="display:flex;justify-content:space-between;align-items:center">
         <div style="font-family:'Amiri',serif;font-size:0.95rem;color:var(--text);font-weight:700">سورة الإنسان برواية خلف عن حمزة</div>
         <div style="font-size:0.7rem;color:var(--g2)">▶ يوتيوب</div>
-      <button class="fav-star" onclick="event.stopPropagation();toggleFavFeatured('ME8gjoWCwK8')" title="أضف للمفضلة">&#9734;</button>
+      <button class="fav-star" onclick="event.stopPropagation();toggleFavFeatured('bAuiG2A8LvQ')" title="أضف للمفضلة">&#9734;</button>
+      </div>
+    </div>
+    <div style="background:#f0e8cc;border:1px solid rgba(154,117,32,.25);padding:20px;border-radius:2px;cursor:pointer" onclick="ytOpenFeat('XoA1ndXoSio')">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-family:'Amiri',serif;font-size:0.95rem;color:var(--text);font-weight:700">سورة مريم | رواية خلف عن حمزة</div>
+        <div style="font-size:0.7rem;color:var(--g2)">▶ يوتيوب</div>
+      <button class="fav-star" onclick="event.stopPropagation();toggleFavFeatured('XoA1ndXoSio')" title="أضف للمفضلة">&#9734;</button>
       </div>
     </div>
   </div>
@@ -3979,6 +3986,7 @@ var FEATURED_ITEMS = [
   {id:'4vsWFDZ-aVo',title:'سورة النجم برواية خلف عن حمزة رمضان ١٤٤٢',tag:'خلف عن حمزة'},
   {id:'w2wrcvM_vGs',title:'سورة عبس والتكوير والانفطار برواية خلف عن حمزة',tag:'خلف عن حمزة'},
   {id:'bAuiG2A8LvQ',title:'سورة الإنسان برواية خلف عن حمزة',tag:'خلف عن حمزة'},
+  {id:'XoA1ndXoSio',title:'سورة مريم | رواية خلف عن حمزة',tag:'خلف عن حمزة'},
   {id:'ME8gjoWCwK8',title:'لأول مرة الترتيل الحضرمي اليمني برواية ورش عن نافع',tag:'ورش عن نافع'},
   {id:'KeDeB01-QzE',title:'هل سمعت جمال رواية ورش عن نافع',tag:'ورش عن نافع'},
   {id:'4in5tHm3x1M',title:'تلاوة بديعة لسورة الرعد برواية قالون عن نافع',tag:'قالون عن نافع'},
@@ -4866,14 +4874,19 @@ async function enableNufaisPush(fromMenu){
   }
 }
 // مزامنة الاشتراك الموجود بهدوء + فتح القسم من رابط الإشعار
-window.addEventListener('hashchange', function(){
-  var h=(location.hash||'').replace('#','');
-  var pg=h && document.getElementById('page-'+h);
-  if(pg && !pg.classList.contains('active')){ try{ _nufaisNavigatingViaHistory=true; showPage(h); }catch(e){} finally{ _nufaisNavigatingViaHistory=false; } }
-});
+// رابط مثل #featured:khalaf يفتح الصفحة ثم التبويب
+function _openHash(){
+  var parts=(location.hash||'').replace('#','').split(':'), h=parts[0], t=parts[1];
+  if(!h || !document.getElementById('page-'+h)) return;
+  try{ _nufaisNavigatingViaHistory=true; if(!document.getElementById('page-'+h).classList.contains('active')) showPage(h); }catch(e){} finally{ _nufaisNavigatingViaHistory=false; }
+  if(t){ setTimeout(function(){ try{
+    if(h==='featured' && document.getElementById('ftab-content-'+t)) showFTab(t);
+    else if(h==='lectures' && document.getElementById('tab-content-'+t)) showTab(t);
+  }catch(e){} }, 50); }
+}
+window.addEventListener('hashchange', function(){ _openHash(); });
 window.addEventListener('load', function(){
-  var h=(location.hash||'').replace('#','');
-  if(h && document.getElementById('page-'+h)){ try{ showPage(h); }catch(e){} }
+  _openHash();
   updatePushCard();
   if(_pushSupported() && Notification.permission==='granted'){
     _currentSub().then(function(s){ if(s) _sendSub(s).catch(function(){}); }).catch(function(){});
