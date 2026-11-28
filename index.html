@@ -1523,6 +1523,44 @@ nav .nav-dark {
     <p class="hero-ayah">﴿وَنُنَزِّلُ مِنَ الْقُرْآنِ مَا هُوَ شِفَاءٌ وَرَحْمَةٌ لِّلْمُؤْمِنِينَ﴾</p>
     <p class="hero-ayah-ref" style="color:var(--g2)">سورة الإسراء · ٨٢</p>
 
+    <!-- ═══ بوكس: ثبّت الموقع وفعّل الإشعارات ═══ -->
+    <style>
+    #join-box{display:none;position:relative;width:100%;max-width:480px;margin:0 0 28px;padding:22px 20px 18px;border-radius:22px;text-align:right;overflow:hidden;
+      background:radial-gradient(120% 90% at 100% 0%,rgba(232,201,122,.16),transparent 55%),linear-gradient(160deg,#0d4a35 0%,#062018 70%);
+      border:1px solid rgba(232,201,122,.45);box-shadow:0 14px 40px rgba(6,32,24,.35),inset 0 1px 0 rgba(255,248,231,.08);color:#f5e4a8;animation:jbIn .6s cubic-bezier(.2,.8,.2,1)}
+    #join-box::before{content:"";position:absolute;inset:0;background:var(--gold-line);height:1px;opacity:.7}
+    @keyframes jbIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    #join-box .jb-x{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.06);border:1px solid rgba(232,201,122,.25);color:#e8c97a;width:30px;height:30px;border-radius:50%;font-size:.85rem;cursor:pointer;line-height:1}
+    #join-box .jb-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+    #join-box .jb-bell{flex-shrink:0;width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--gold-grad);box-shadow:0 6px 18px rgba(201,168,76,.35)}
+    #join-box .jb-bell svg{width:26px;height:26px;stroke:#062018;animation:jbRing 2.8s ease-in-out infinite;transform-origin:50% 10%}
+    @keyframes jbRing{0%,70%,100%{transform:rotate(0)}74%{transform:rotate(14deg)}78%{transform:rotate(-12deg)}82%{transform:rotate(8deg)}86%{transform:rotate(-5deg)}90%{transform:rotate(0)}}
+    #join-box h3{font-family:'Amiri',serif;font-size:1.35rem;line-height:1.35;color:#fff8e7;font-weight:700;margin:0}
+    #join-box .jb-sub{font-family:'Tajawal',sans-serif;font-size:.86rem;line-height:1.8;color:#e0cd96;margin:4px 0 14px}
+    #join-box ol{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:9px}
+    #join-box li{display:flex;align-items:center;gap:12px;background:rgba(255,248,231,.05);border:1px solid rgba(232,201,122,.16);border-radius:14px;padding:10px 12px;font-family:'Tajawal',sans-serif;font-size:.9rem;color:#fff8e7;line-height:1.6}
+    #join-box li .n{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:rgba(232,201,122,.15);border:1px solid rgba(232,201,122,.5);color:#e8c97a;font-weight:700;font-size:.8rem}
+    #join-box li .ic{display:inline-grid;place-items:center;vertical-align:middle;width:26px;height:26px;margin:0 3px;border-radius:7px;background:rgba(255,248,231,.12)}
+    #join-box li .ic svg{width:16px;height:16px;stroke:#8fc9ae}
+    #join-box li b{color:#e8c97a;font-weight:700}
+    #join-box .jb-btns{display:flex;gap:10px;flex-wrap:wrap}
+    #join-box .jb-btn{flex:1;min-width:140px;padding:14px 16px;border-radius:14px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:.98rem;font-weight:700;background:var(--gold-grad);color:#062018;box-shadow:0 6px 18px rgba(201,168,76,.3)}
+    #join-box .jb-btn.alt{background:transparent;color:#e8c97a;border:1px solid rgba(232,201,122,.55);box-shadow:none}
+    #join-box .jb-btn:active{transform:scale(.98)}
+    #join-box .jb-note{font-family:'Tajawal',sans-serif;font-size:.74rem;color:#8fc9ae;margin-top:10px;line-height:1.7}
+    </style>
+    <div id="join-box" role="region" aria-label="تثبيت الموقع وتفعيل الإشعارات">
+      <button class="jb-x" onclick="dismissJoinBox()" aria-label="إغلاق">✕</button>
+      <div class="jb-head">
+        <div class="jb-bell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <h3 id="jb-title">لا يفوتك جديد الشيخ</h3>
+      </div>
+      <div class="jb-sub" id="jb-sub">ثبّت الموقع على جوالك وفعّل الإشعارات، ويوصلك كل جديد أول بأول: تلاوات، خطب، وحلقات ألفبائية النفيس.</div>
+      <ol id="jb-steps"></ol>
+      <div class="jb-btns" id="jb-btns"></div>
+      <div class="jb-note" id="jb-note"></div>
+    </div>
+
     <!-- مربع البحث الشامل في الرئيسية -->
     <div style="width:100%;max-width:480px;margin-bottom:36px;position:relative">
       <span style="position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:1.1rem;opacity:.45;pointer-events:none">🔍</span>
@@ -1539,17 +1577,6 @@ nav .nav-dark {
     <div id="lastCard" onclick="resumeLast()" style="display:none;background:var(--card);border:1px solid var(--border2);padding:13px 20px;width:100%;max-width:400px;margin-bottom:16px;cursor:pointer;text-align:right;transition:all .3s">
       <div style="font-size:0.62rem;letter-spacing:.14em;color:var(--g2);text-transform:uppercase;margin-bottom:3px">▶ أكمل من حيث توقفت</div>
       <div style="font-family:'Amiri',serif;font-size:1.15rem;color:var(--text)" id="lastName">—</div>
-    </div>
-    <div id="push-card" style="display:none;background:var(--card);border:1px solid var(--border2);padding:14px 18px;width:100%;max-width:400px;margin-bottom:16px;border-radius:14px;box-shadow:var(--sh1);text-align:right">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div style="font-size:1.4rem;flex-shrink:0">🔔</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-family:'Amiri',serif;font-size:1.05rem;color:var(--text);font-weight:700">الإشعارات</div>
-          <div id="push-card-text" style="font-family:'Tajawal',sans-serif;font-size:0.78rem;color:var(--g2);line-height:1.6">يوصلك تنبيه أول ما تنزل حلقة أو تلاوة جديدة</div>
-        </div>
-        <button id="push-card-btn" onclick="enableNufaisPush()" style="flex-shrink:0;padding:9px 14px;border-radius:10px;border:1px solid rgba(154,117,32,.5);background:var(--ink);color:var(--g3);font-family:'Tajawal',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer">فعّل</button>
-        <button onclick="dismissPushCard()" aria-label="إغلاق" style="flex-shrink:0;background:none;border:none;color:var(--g2);font-size:1rem;cursor:pointer;padding:2px 4px">✕</button>
-      </div>
     </div>
     <div class="hero-cards">
       <div class="hero-card" onclick="showPage('mushaf')"><div class="hero-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="hero-card-label">المصحف الكامل</div></div>
@@ -4618,6 +4645,7 @@ function _pwaShownToday(){
 }
 
 function showPWAPrompt(){
+  if(typeof renderJoinBox==='function'){ renderJoinBox(); return; } // البوكس الكبير يغني عن النافذة القديمة
   if(_isInStandalone || _pwaShownToday()) return;
   var el = document.getElementById('pwa-prompt');
   if(!el) return;
@@ -4663,6 +4691,7 @@ if(_isIOS && !_isInStandalone){
 window.addEventListener('appinstalled', function(){
   closePWA();
   _deferredPrompt = null;
+  if(typeof renderJoinBox==='function') renderJoinBox();
 });
 </script>
 
@@ -4840,38 +4869,76 @@ function _sendSub(sub){
   return fetch('/api/push/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON()})})
     .then(function(r){ if(!r.ok) throw new Error('subscribe '+r.status); });
 }
-function dismissPushCard(){
-  try{ localStorage.setItem('push_card_hidden', String(Date.now())); }catch(e){}
-  var c=document.getElementById('push-card'); if(c) c.style.display='none';
-}
 async function _currentSub(){
   if(!_pushSupported()) return null;
   var reg = await navigator.serviceWorker.ready;
   return reg.pushManager.getSubscription();
 }
-async function updatePushCard(){
-  var card=document.getElementById('push-card'); if(!card) return;
-  var hidden=0; try{ hidden=+localStorage.getItem('push_card_hidden')||0; }catch(e){}
-  if(Date.now()-hidden < 7*24*3600*1000){ card.style.display='none'; return; }
-  var txt=document.getElementById('push-card-text'), btn=document.getElementById('push-card-btn');
-  if(_isIOS() && !_isStandalone()){
-    txt.textContent='على الآيفون: أضف الموقع للشاشة الرئيسية وافتحه من هناك، بعدها فعّل الإشعارات';
-    btn.style.display='none'; card.style.display='block'; return;
-  }
-  if(!_pushSupported() || Notification.permission==='denied'){ card.style.display='none'; return; }
-  try{
-    var sub = Notification.permission==='granted' ? await _currentSub() : null;
-    card.style.display = sub ? 'none' : 'block';
-    btn.style.display='';
-  }catch(e){ card.style.display='none'; }
+var _ICON_SHARE='<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></span>';
+var _ICON_ADD='<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg></span>';
+var _ICON_DOTS='<span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="2" fill="#8fc9ae"/><circle cx="12" cy="12" r="2" fill="#8fc9ae"/><circle cx="19" cy="12" r="2" fill="#8fc9ae"/></svg></span>';
+function _inAppBrowser(){ return /Instagram|FBAN|FBAV|FB_IAB|Snapchat|TikTok|musical_ly|Line\/|Twitter/i.test(navigator.userAgent); }
+function _iosVersion(){ var m=navigator.userAgent.match(/OS (\d+)_(\d+)/); return m ? (+m[1] + (+m[2])/100) : 0; }
+function dismissJoinBox(){
+  try{ localStorage.setItem('join_box_hidden', String(Date.now())); }catch(e){}
+  var b=document.getElementById('join-box'); if(b) b.style.display='none';
 }
+function copySiteLink(btn){
+  var url='https://alnufaisqrn.com';
+  var done=function(){ if(btn){ btn.textContent='✓ تم نسخ الرابط'; } _pushToast('انسخ الرابط في Safari أو Chrome وافتحه هناك'); };
+  try{ navigator.clipboard.writeText(url).then(done, done); }catch(e){ done(); }
+}
+function _jb(title, sub, steps, btns, note){
+  document.getElementById('jb-title').textContent=title;
+  document.getElementById('jb-sub').textContent=sub;
+  document.getElementById('jb-steps').innerHTML=steps.map(function(t,i){ return '<li><span class="n">'+(i+1)+'</span><span>'+t+'</span></li>'; }).join('');
+  document.getElementById('jb-steps').style.display=steps.length?'':'none';
+  document.getElementById('jb-btns').innerHTML=btns||'';
+  document.getElementById('jb-note').textContent=note||'';
+  document.getElementById('join-box').style.display='block';
+}
+// يختار الخطوات المناسبة لجهاز الزائر
+async function renderJoinBox(){
+  var box=document.getElementById('join-box'); if(!box) return;
+  var hidden=0; try{ hidden=+localStorage.getItem('join_box_hidden')||0; }catch(e){}
+  if(Date.now()-hidden < 3*24*3600*1000){ box.style.display='none'; return; }
+  var ios=_isIOS(), standalone=_isStandalone();
+  var sub='ثبّت الموقع على جوالك وفعّل الإشعارات، ويوصلك كل جديد أول بأول: تلاوات، خطب، وحلقات ألفبائية النفيس.';
+  // مشترك فعلاً؟ نخفي البوكس
+  if(_pushSupported() && Notification.permission==='granted'){
+    try{ if(await _currentSub()){ box.style.display='none'; return; } }catch(e){}
+  }
+  if(_inAppBrowser()){
+    return _jb('افتح الموقع في المتصفح', 'أنت فاتح الموقع من داخل تطبيق (مثل انستقرام)، ومن هنا ما ينثبت ولا تشتغل الإشعارات.',
+      ['اضغط '+_ICON_DOTS+' فوق يمين الشاشة', 'اختر <b>«فتح في المتصفح»</b> أو <b><bdi dir="ltr">Open in browser</bdi></b>', 'بعدها اتبع خطوات التثبيت اللي بتطلع لك'],
+      '<button class="jb-btn alt" onclick="copySiteLink(this)">📋 نسخ رابط الموقع</button>');
+  }
+  if(ios && !standalone){
+    var v=_iosVersion();
+    return _jb('ثبّت الموقع وفعّل الإشعارات', sub,
+      ['اضغط زر المشاركة '+_ICON_SHARE+' أسفل الشاشة', 'انزل واختر <b>«إضافة إلى الشاشة الرئيسية»</b> '+_ICON_ADD, 'افتح الموقع من الأيقونة الجديدة واضغط <b>«فعّل الإشعارات»</b>'],
+      '', (v && v<16.4) ? 'ملاحظة: الإشعارات على الآيفون تحتاج iOS 16.4 أو أحدث — حدّث جوالك من الإعدادات.' : 'خطوة وحدة تسويها مرة وحدة بس 🤍');
+  }
+  if(!_pushSupported()){ box.style.display='none'; return; }
+  if(Notification.permission==='denied'){
+    return _jb('الإشعارات مقفلة', 'سبق ورفضت الإشعارات لهذا الموقع، وتقدر ترجعها بسهولة:',
+      ios ? ['افتح <b>الإعدادات</b> في جوالك', 'اختر <b>الإشعارات</b> ثم <b>النفيس</b>', 'فعّل <b>السماح بالإشعارات</b>']
+          : ['اضغط على القفل 🔒 بجانب رابط الموقع فوق', 'اختر <b>الأذونات</b> ← <b>الإشعارات</b>', 'غيّرها إلى <b>السماح</b> ثم حدّث الصفحة'],
+      '');
+  }
+  var btns='<button class="jb-btn" onclick="enableNufaisPush()">🔔 فعّل الإشعارات</button>';
+  if(!standalone && _deferredPrompt) btns+='<button class="jb-btn alt" onclick="installPWA()">📲 ثبّت التطبيق</button>';
+  if(standalone) return _jb('آخر خطوة: فعّل الإشعارات', 'اضغط الزر واختر «السماح»، وبيوصلك كل جديد للشيخ أول ما ينزل.', [], btns);
+  return _jb('لا يفوتك جديد الشيخ', sub, [], btns, _deferredPrompt ? 'التثبيت يخلي الموقع مثل التطبيق على شاشتك الرئيسية.' : '');
+}
+function updatePushCard(){ return renderJoinBox(); }
 async function enableNufaisPush(fromMenu){
   if(_isIOS() && !_isStandalone()){
-    _pushToast('على الآيفون: أضف الموقع للشاشة الرئيسية (مشاركة ← إضافة إلى الشاشة الرئيسية) وافتحه من هناك، ثم فعّل الإشعارات');
+    try{localStorage.removeItem('join_box_hidden')}catch(e){} showPage('home'); renderJoinBox(); setTimeout(function(){ var b=document.getElementById('join-box'); if(b) b.scrollIntoView({behavior:'smooth',block:'center'}); },200);
     return;
   }
   if(!_pushSupported()){ _pushToast('متصفحك ما يدعم الإشعارات'); return; }
-  if(Notification.permission==='denied'){ _pushToast('الإشعارات مقفلة لهذا الموقع — فعّلها من إعدادات الجهاز أو المتصفح'); return; }
+  if(Notification.permission==='denied'){ try{localStorage.removeItem('join_box_hidden')}catch(e){} renderJoinBox(); showPage('home'); window.scrollTo({top:0,behavior:'smooth'}); return; }
   try{
     var perm = await Notification.requestPermission();
     if(perm!=='granted'){ _pushToast('ما تم تفعيل الإشعارات'); return; }
@@ -4880,7 +4947,7 @@ async function enableNufaisPush(fromMenu){
     if(!sub) sub = await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:_b64ToU8(NUFAIS_VAPID_KEY)});
     await _sendSub(sub);
     _pushToast('تم تفعيل الإشعارات ✅ بيوصلك تنبيه مع كل جديد');
-    var c=document.getElementById('push-card'); if(c) c.style.display='none';
+    renderJoinBox();
   }catch(e){
     _pushToast('صار خطأ أثناء التفعيل، حاول مرة ثانية');
   }
